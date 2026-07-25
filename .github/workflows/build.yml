@@ -1,32 +1,19 @@
-name: Build Android APK
+name: Build App
 
-on:
-  push:
-    branches: [ main ]
+on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-
-    - name: Package Web App Files
+    - uses: actions/checkout@v3
+    - name: Create Archive
       run: |
-        mkdir -p app-files
-        cp index.html app-files/
-        if [ -f "14783.png" ]; then cp 14783.png app-files/; fi
-        cd app-files && zip -r ../YouxEnglish-App.zip * && cd ..
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v3
+        mkdir package
+        cp index.html package/
+        if [ -f "14783.png" ]; then cp 14783.png package/; fi
+        cd package && zip -r ../app.zip *
+    - uses: actions/upload-artifact@v3
       with:
         name: YouxEnglish-App
-        path: YouxEnglish-App.zip
+        path: app.zip
