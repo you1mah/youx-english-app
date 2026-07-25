@@ -18,21 +18,15 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Build Webview Android App & Generate APK
+    - name: Package Web App Files
       run: |
-        mkdir -p android-app/app/src/main/assets/
-        cp index.html android-app/app/src/main/assets/
-        if [ -f "14783.png" ]; then cp 14783.png android-app/app/src/main/assets/; fi
-        
-        # إنشاء ملف APK وهمي أو حزمة جاهزة للتحميل الفوري
-        mkdir -p output-apk
-        cp index.html output-apk/index.html
-        if [ -f "14783.png" ]; then cp 14783.png output-apk/14783.png; fi
-        cd output-apk && zip -r ../YouxEnglish.zip * && cd ..
-        mv YouxEnglish.zip YouxEnglish.apk
+        mkdir -p app-files
+        cp index.html app-files/
+        if [ -f "14783.png" ]; then cp 14783.png app-files/; fi
+        cd app-files && zip -r ../YouxEnglish-App.zip * && cd ..
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: YouxEnglish-APK
-        path: YouxEnglish.apk
+        name: YouxEnglish-App
+        path: YouxEnglish-App.zip
